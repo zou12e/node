@@ -3,15 +3,33 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=dev PORT=5000 && nodemon app.js",
+    "lint": "./node_modules/.bin/eslint .",
+    "lint:fix": "./node_modules/.bin/eslint . --fix"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "body-parser": "^1.17.1",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "config": "^1.29.2",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.6",
-    "express": "^4.15.2",
-    "mongoose": "^4.9.6"
+    "express": "^4.16.2",
+    "file-stream-rotator": "^0.2.0",
+    "mongoose": "^4.9.6",
+    "morgan": "^1.9.0",
+    "path": "^0.12.7",
+    "tool_by_zou12e": "^1.0.2"
+  },
+  "devDependencies": {
+    "@fmfe/eslint-config-fmfe-nodejs": "^0.0.1",
+    "cz-conventional-changelog": "^2.0.0",
+    "eslint": "^4.17.0"
   }
 }

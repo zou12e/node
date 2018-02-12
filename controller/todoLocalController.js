@@ -1,7 +1,5 @@
 /** 异步回调写法 **/
 
-
-
 const url = 'mongodb://localhost:27017/mydb';
 
 const mongo = require('../lib/mongo');
@@ -24,29 +22,27 @@ const mongoTool = mongo(url, 'mycoll');
 //     console.log(result);
 // });
 
-
-
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 // 对数据进行解析
-var urlencodeParser = bodyParser.urlencoded({ extended: false });
+const urlencodeParser = bodyParser.urlencoded({ extended: false });
 
-module.exports = function(app) {
+module.exports = function (app) {
     // 获取数据
-    app.get('/todo', function(req, res) {
-        mongoTool.find({}, function(result) {
+    app.get('/todo', function (req, res) {
+        mongoTool.find({}, function (result) {
             res.render('todo', { todos: result });
         });
     });
 
     // 传递数据
-    app.post('/todo', urlencodeParser, function(req, res) {
+    app.post('/todo', urlencodeParser, function (req, res) {
         mongoTool.insert([req.body]);
     });
 
     // 删除数据
-    app.delete('/todo/:item', function(req, res) {
-        mongoTool.remove({ item: req.params.item }, function(result) {
+    app.delete('/todo/:item', function (req, res) {
+        mongoTool.remove({ item: req.params.item }, function (result) {
             res.json(result);
         });
     });
-}
+};
