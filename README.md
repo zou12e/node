@@ -6,9 +6,8 @@ node + mongodb
 https://mlab.com/welcome/
 
 
-
 2.连接本地mongo
-a:本地安装 
+a:本地安装
 http://blog.csdn.net/qq_28767763/article/details/53886603
 
 
