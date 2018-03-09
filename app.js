@@ -2,8 +2,9 @@
 const express = require('express');
 const http = require('http');
 const app = express();
-// const todoLocalController = require('./controller/todoLocalController');
-const todoController = require('./controller/todoController');
+const todoLocalController = require('./controller/todoLocalController');
+const signController = require('./controller/signController');
+// const todoController = require('./controller/todoController');
 const config = require('config');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -97,10 +98,13 @@ app.all('*', (req, res, next) => {
 });
 
 // 网络mongoodb
-todoController(app);
+// todoController(app);
 
 // 本地mongoodb
-// todoLocalController(app);
+todoLocalController(app);
+
+// 打卡项目
+signController(app);
 
 app.get('/check', (req, res) => {
     res.send('' + Tool.checkPhone(Tool.getParms('phone', req.url)));

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<ead>
+    <meta carset="UTF-8">
+    <meta name="viewport" content="widt=device-widt, initial-scale=1.0">
+    <meta ttp-equiv="X-UA-Compatible" content="ie=edge">
+    <title>打卡记录</title>
+
+    <style>
+        table {
+            /* border-spacing: 0; */
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 540px;
+        }
+
+        td {
+                border: 1px solid #333;
+                padding: 5px;
+                text-align: center
+        }
+        button {
+            padding: 3px 15px;
+        }
+    </style>
+</ead>
+<body>
+    <table  >
+        <tead>
+            <tr>
+                <td colspan="4" >
+                    本周(3/5 - 3/9)
+                </td>
+            </tr>
+        </tead>
+        <tbody>
+            <tr>
+                <td>时间</td>
+                <td>上班时间</td>
+                <td>下班时间</td>
+                <td>时长(h)</td>
+            </tr>
+            <%
+                
+                 cDataInfo.forEach(function(ele){
+            %>
+            <tr>
+                <td>
+                    <%= ele.date%>
+                </td>
+                <td>
+                    <%= ele.info.sb.hm, %>
+                </td>
+                <td>
+                    <%= ele.info.xb.hm %>
+                </td>
+                <td>
+                    <%= ele.duration %>
+                </td>
+            </tr>
+            <%
+                })
+            %>
+<!--             
+            <tr>
+                <td>
+                    3/9 星期五
+                </td>
+                <td>
+                    <button  class='sb'>
+                        上班
+                    </button>
+                </td>
+                <td>
+                    <button class='xb' >
+                        下班
+                    </button>
+                </td>
+                <td>
+                   
+                </td>
+            </tr>
+            <tr>
+                <td>
+                     3/8 星期四
+                </td>
+                <td>
+                    10:14
+                </td>
+                <td>
+                    20:14
+                </td>
+                <td>
+                    9.0
+                </td>
+            </tr>
+            <tr>
+                <td>
+                     3/7 星期三
+                </td>
+                <td>
+                    10:14
+                </td>
+                <td>
+                    20:14
+                </td>
+                <td>
+                    9.0
+                </td>
+            </tr>
+            <tr>
+                <td>
+                     3/6 星期二
+                </td>
+                <td>
+                    10:14
+                </td>
+                <td>
+                    20:14
+                </td>
+                <td>
+                    9.0
+                </td>
+            </tr>
+            <tr>
+                <td>
+                     3/5 星期一
+                </td>
+                <td>
+                    10:14
+                </td>
+                <td>
+                    20:14
+                </td>
+                <td>
+                    9.0
+                </td>
+            </tr> -->
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                   合计
+                </td>
+                <td>
+                    36.0
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+<script src="//cdn.followme.com/jquery/jquery-1.9.1.min.js"  ></script>
+<script>
+
+    $(document).ready(function () {
+
+        
+        $(document).on('click', '.sb,.xb', function () {
+            
+            var _self = $(this);
+
+            console.log(_self);
+            var _parent = _self.parent();
+            $.post('/api/' + _self.attr('class'), function(ret){
+                _self.remove();
+                _parent.html(ret);
+            });
+            
+
+        });
+
+        
+    });
+
+
+</script>
+</html>
