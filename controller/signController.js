@@ -20,31 +20,36 @@ module.exports = function (app) {
         const now = new Date();
 
         // 当前星期几
-        const week = now.getDay();
+        let week = now.getDay() || 7; // 星期天返回0 false,直接返回7
+     
 
         // 当前周星期一日期
         const cDay = moment(now).subtract(week - 1, 'days').format('YYYY-MM-DD 00:00');
+
 
         // 当前周星期一日期
         // const bDay = moment(now).subtract(week - 1 + 7, 'days').format('YYYY-MM-DD 00:00');
 
         // 查询当前周打卡情况
-        const cData = await m.findAsync({ 'date': { '$gte': new Date(cDay) } }, { '_id': 0 });
+        const cData = await m.findAsync({ 'date': { '$gte': new Date(cDay) } }, { 'date': -1 });
+
 
         // 查询上前周打卡情况
         // const bData = await m.findAsync({ 'date': { '$gte': new Date(bDay), '$lt': new Date(cDay) } });
         //
-        const cDataDetal = [];
+        const cDataDetal = {};
 
-        // console.log(cData);
+       
         cData.forEach(ele => {
             ele.ymd = moment(ele.date).format('YYYY-MM-DD');
+            ele.md = moment(ele.date).format('MM-DD');
             ele.hm = moment(ele.date).format('HH:mm');
             ele.ymdhm = ele.ymd + ele.hm;
-            ele.week = `星期${cnWeek[moment(ele.date).weekday()]}`;
+            ele.week = cnWeek[moment(ele.date).weekday()];
             if (!cDataDetal[ele.ymd]) cDataDetal[ele.ymd] = { sb: {}, xb: {} };
             // 储存数据
             cDataDetal[ele.ymd][ele.type].ymd = ele.ymd;
+            cDataDetal[ele.ymd][ele.type].md = ele.md;
             cDataDetal[ele.ymd][ele.type].hm = ele.hm;
             cDataDetal[ele.ymd][ele.type].ymdhm = ele.ymdhm;
             cDataDetal[ele.ymd][ele.type].week = ele.week;
@@ -60,7 +65,7 @@ module.exports = function (app) {
             });
         }
 
-        console.log('----------------------');
+       
         res.render('sign/index', { cDataInfo: cDataInfo });
     });
 
@@ -146,20 +151,22 @@ function getDuration (ymd, sb, xb) {
     xb = new Date(xb).getTime();
 
     const tm = [];
+    // 早上9点之后 12点之前上班，晚上18-19点之间下班
     if (sb > d0 && sb < d1 && xb > d3 && xb < d4) {
         tm.push((d1 - sb) / 1000 / 60); // 早上时间
         tm.push((d3 - d2) / 1000 / 60); // 下午时间 270分钟 4.5小时
         tm.push((xb - d3) / 1000 / 60); // 晚上时间 18-19点之间时间
 
-        return (tm[0] + tm[1] + tm[2]) / 60;
+        return (tm[0] + tm[1] + tm[2]);
     }
+    // 早上9点之后 12点之前上班，晚上19点之后下班
     if (sb > d0 && sb < d1 && xb > d4) {
         tm.push((d1 - sb) / 1000 / 60); // 早上时间
         tm.push((d3 - d2) / 1000 / 60); // 下午时间 270分钟 4.5小时
         tm.push((xb - d4) / 1000 / 60); // 晚上时间 19点之间时间
 
-        return (tm[0] + tm[1] + tm[2]) / 60;
+        return (tm[0] + tm[1] + tm[2]);
     }
 
-    return 10;
+    return '';
 }

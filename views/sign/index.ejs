@@ -38,7 +38,7 @@
                 <td>时间</td>
                 <td>上班时间</td>
                 <td>下班时间</td>
-                <td>时长(h)</td>
+                <td>时长(m)</td>
             </tr>
             <%
                 
@@ -46,13 +46,22 @@
             %>
             <tr>
                 <td>
-                    <%= ele.date%>
+                    
+                    <%= ele.info.sb.md %> (星期<%= ele.info.sb.week %>)
                 </td>
                 <td>
-                    <%= ele.info.sb.hm, %>
+                    <%= ele.info.sb.hm %>
+
+                    <!-- <button  class='sb'>
+                        上班
+                    </button> -->
                 </td>
                 <td>
                     <%= ele.info.xb.hm %>
+
+                    <!-- <button class='xb' >
+                        下班
+                    </button> -->
                 </td>
                 <td>
                     <%= ele.duration %>
